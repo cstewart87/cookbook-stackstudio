@@ -33,9 +33,7 @@ user 'stackstudio' do
   supports :manage_home => true
 end
 
-repo_home = "#{node['stackstudio']['home']}/StackStudio"
-
-git repo_home do
+git node['stackstudio']['home'] do
   repository 'https://github.com/TranscendComputing/StackStudio.git'
   revision node['stackstudio']['git_revision']
   user 'stackstudio'
@@ -43,14 +41,14 @@ git repo_home do
   action :sync
 end
 
-directory "#{repo_home}/log" do
+directory "#{node['stackstudio']['home']}/log" do
   owner 'stackstudio'
   group 'stackstudio'
 end
 
 logrotate_app 'stackstudio' do
   cookbook 'logrotate'
-  path "#{repo_home}/log/grunt.log"
+  path "#{node['stackstudio']['home']}/log/grunt.log"
   frequency 'daily'
   rotate 5
   create '666 stackstudio stackstudio'
@@ -59,19 +57,19 @@ end
 execute 'npm-install' do
   command 'npm install'
   cwd repo_home
-  creates "#{repo_home}/node_modules"
+  creates "#{node['stackstudio']['home']}/node_modules"
 end
 
 execute 'grunt run > log/grunt.log &' do
   cwd repo_home
   user 'stackstudio'
   group 'stackstudio'
-  creates "#{repo_home}/log/grunt.log"
+  creates "#{node['stackstudio']['home']}/log/grunt.log"
 end
 
 backend = find_cloudmux(node['stackstudio']['cloudmux_endpoint'])
 
-template "#{repo_home}/backend.json" do
+template "#{node['stackstudio']['home']}/backend.json" do
   owner 'stackstudio'
   group 'stackstudio'
   variables(
