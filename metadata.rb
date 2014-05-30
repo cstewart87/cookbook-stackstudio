@@ -1,0 +1,10 @@
+name             'stackstudio'
+maintainer       'Transcend Computing'
+maintainer_email 'cstewart@momentumsi.com'
+license          'Apache 2.0'
+description      'Installs/Configures stackstudio'
+long_description 'Installs/Configures stackstudio'
+version          '0.1.0'
+
+depends 'nodejs'
+depends 'logrotate'
