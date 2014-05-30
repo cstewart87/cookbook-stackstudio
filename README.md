@@ -1,6 +1,6 @@
 # stackstudio-cookbook
 
-Sets up StackStudio console.
+Sets up [StackStudio](https://github.com/TranscendComputing/StackStudio) console.
 
 ## Supported Platforms
 
