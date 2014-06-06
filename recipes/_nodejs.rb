@@ -17,6 +17,12 @@
 # limitations under the License.
 #
 
-include_recipe 'nodejs'
+%w( python-software-properties python g++ make ).each do |pkg|
+  package pkg do
+    action :install
+  end
+end
 
-nodejs_npm 'grunt-cli'
+apt_repository 'nodejs' do
+  url 'ppa:chris-lea/node.js'
+end

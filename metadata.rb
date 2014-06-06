@@ -6,5 +6,5 @@ description      'Installs/Configures stackstudio'
 long_description 'Installs/Configures stackstudio'
 version          '0.1.0'
 
-depends 'nodejs'
+depends 'apt'
 depends 'logrotate'

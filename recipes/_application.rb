@@ -60,11 +60,9 @@ execute 'npm-install' do
   creates "#{node['stackstudio']['home']}/node_modules"
 end
 
-execute 'grunt run > log/grunt.log &' do
+execute 'npm-grunt-install' do
+  command 'npm install -g grunt-cli'
   cwd repo_home
-  user 'stackstudio'
-  group 'stackstudio'
-  creates "#{node['stackstudio']['home']}/log/grunt.log"
 end
 
 backend = find_cloudmux(node['stackstudio']['cloudmux_endpoint'])
