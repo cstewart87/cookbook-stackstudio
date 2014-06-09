@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: stackstudio
-# Recipe:: default
+# Recipe:: _nodejs
 #
 # Copyright (C) 2014 Transcend Computing
 #
@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe 'stackstudio::_apt'
-include_recipe 'stackstudio::_git'
-include_recipe 'stackstudio::_nodejs'
-include_recipe 'stackstudio::_application'
-include_recipe 'stackstudio::_nginx'
+node.set['nginx']['default_root'] = node['stackstudio']['home']
+
+include_recipe 'nginx'

@@ -29,8 +29,12 @@ user 'stackstudio' do
   gid 'stackstudio'
   home node['stackstudio']['home']
   comment 'StackStudio'
-  shell '/bin/bash'
-  supports :manage_home => true
+end
+
+directory node['stackstudio']['home'] do
+  owner 'stackstudio'
+  group 'stackstudio'
+  action :create
 end
 
 git node['stackstudio']['home'] do
@@ -38,36 +42,29 @@ git node['stackstudio']['home'] do
   revision node['stackstudio']['git_revision']
   user 'stackstudio'
   group 'stackstudio'
-  action :sync
-end
-
-directory "#{node['stackstudio']['home']}/log" do
-  owner 'stackstudio'
-  group 'stackstudio'
-end
-
-logrotate_app 'stackstudio' do
-  cookbook 'logrotate'
-  path "#{node['stackstudio']['home']}/log/grunt.log"
-  frequency 'daily'
-  rotate 5
-  create '666 stackstudio stackstudio'
 end
 
 execute 'npm-install' do
   command 'npm install'
-  cwd repo_home
+  user 'stackstudio'
+  group 'stackstudio'
+  cwd node['stackstudio']['home']
   creates "#{node['stackstudio']['home']}/node_modules"
 end
 
 execute 'npm-grunt-install' do
   command 'npm install -g grunt-cli'
-  cwd repo_home
+  cwd node['stackstudio']['home']
 end
 
-backend = find_cloudmux(node['stackstudio']['cloudmux_endpoint'])
+if Chef::Config[:solo]
+  backend = node['stackstudio']['cloudmux_endpoint']
+else
+  cloudmux_node = search(:node, 'role:cloudmux').first
+  backend = cloudmux_node.nil? ? node['ipaddress'] : cloudmux_node['ipaddress']
+end
 
-template "#{node['stackstudio']['home']}/backend.json" do
+template "#{node['stackstudio']['home']}/config/backend.json" do
   owner 'stackstudio'
   group 'stackstudio'
   variables(

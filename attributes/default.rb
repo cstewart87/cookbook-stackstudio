@@ -17,6 +17,6 @@
 # limitations under the License.
 #
 
-default['stackstudio']['home'] = '/home/stackstudio'
+default['stackstudio']['home'] = '/usr/local/stackstudio'
 default['stackstudio']['git_revision'] = 'master'
 default['stackstudio']['cloudmux_endpoint'] = 'http://localhost:9292'

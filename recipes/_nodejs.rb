@@ -17,12 +17,12 @@
 # limitations under the License.
 #
 
-%w( python-software-properties python g++ make ).each do |pkg|
+%w( python-software-properties python g++ make fontconfig bzip2 ).each do |pkg|
   package pkg do
     action :install
   end
 end
 
-apt_repository 'nodejs' do
-  url 'ppa:chris-lea/node.js'
-end
+node.set['nodejs']['install_method'] = 'package'
+
+include_recipe 'nodejs'
